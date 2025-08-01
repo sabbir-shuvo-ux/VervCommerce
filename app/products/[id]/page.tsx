@@ -1,8 +1,11 @@
-import Image from "next/image";
 import { ProductType } from "@/types";
-import { FaStar } from "react-icons/fa6";
-import { Button } from "@/components/ui/button";
-import ProductViewAction from "./(components)/ProductViewAction";
+import type { Metadata } from "next";
+
+import ProductViewContainer from "./(components)/ProductViewContainer";
+
+type Props = {
+  params: Promise<{ id: string }>;
+};
 
 // get product by id
 const getProductData = async (id: string): Promise<ProductType> => {
@@ -16,55 +19,33 @@ const getProductData = async (id: string): Promise<ProductType> => {
   return data;
 };
 
-export default async function ProductViewPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
+// page
+export default async function ProductViewPage({ params }: Props) {
   const { id } = await params;
   const product = await getProductData(id);
 
-  return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10 p-6">
-        {/* Product Image */}
-        <div className="w-full h-[400px] relative rounded-lg overflow-hidden">
-          <Image
-            src={product?.image ? product.image : ""}
-            alt={product?.title ? product.title : ""}
-            fill
-            className="object-contain"
-            priority
-          />
-        </div>
+  return <ProductViewContainer product={product} />;
+}
 
-        {/* Product Details */}
-        <div className="flex flex-col justify-between space-y-4">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">
-              {product?.title}
-            </h1>
-            <p className="text-sm text-gray-500 mt-1 capitalize">
-              {product?.category}
-            </p>
-          </div>
+// generate Metadata
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { id } = await params;
 
-          <p className="text-lg text-gray-700 leading-relaxed">
-            {product?.description}
-          </p>
+  const product = await getProductData(id);
 
-          <div className="flex items-center gap-4">
-            <span className="text-2xl font-semibold text-green-600">
-              ${product?.price}
-            </span>
-            <span className="text-yellow-500 font-medium flex items-center gap-1">
-              <FaStar /> {product?.rating.rate}/5
-            </span>
-          </div>
-
-          <ProductViewAction product={product} />
-        </div>
-      </div>
-    </div>
-  );
+  return {
+    title: product.title + " - VervCommerce",
+    description: product.description,
+    keywords: ["product", "details", "product details"],
+    openGraph: {
+      title: product.title + " - VervCommerce",
+      description: product.description,
+      images: [product.image],
+    },
+    twitter: {
+      title: product.title + " - VervCommerce",
+      description: product.description,
+      images: [product.image],
+    },
+  };
 }
