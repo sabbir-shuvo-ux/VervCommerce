@@ -12,12 +12,26 @@ const getProductData = async (): Promise<ProductType[]> => {
   return data;
 };
 
+const getCategoriesData = async (): Promise<string[]> => {
+  const res = await fetch(`${process.env.API_BASE_URL}/products/categories`, {
+    cache: "force-cache",
+    next: { revalidate: 60 * 60 * 24 },
+  });
+  if (!res.ok) throw new Error("Failed to fetch products");
+
+  const data: string[] = await res.json();
+  return data;
+};
+
 const ProductContainer = async () => {
-  const products = await getProductData();
+  const [products, categories] = await Promise.all([
+    getProductData(),
+    getCategoriesData(),
+  ]);
 
   return (
     <section className="container px-4 mx-auto bg-secondary py-8">
-      <ProductListWrapper products={products} />
+      <ProductListWrapper products={products} categories={categories} />
     </section>
   );
 };

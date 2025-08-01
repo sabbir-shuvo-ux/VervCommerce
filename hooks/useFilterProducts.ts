@@ -18,8 +18,10 @@ export const useFilteredProducts = (products: ProductType[]) => {
   }
 
   //   sort
-  if (filters.sortBy === "price") {
+  if (filters.sortBy === "price-asc") {
     filtered = filtered.sort((a, b) => a.price - b.price);
+  } else if (filters.sortBy === "price-desc") {
+    filtered = filtered.sort((a, b) => b.price - a.price);
   } else if (filters.sortBy === "rating") {
     filtered = filtered.sort((a, b) => b.rating.rate - a.rating.rate);
   }

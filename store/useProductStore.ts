@@ -11,14 +11,14 @@ interface StoreState {
   filters: {
     category: string | null;
     search: string;
-    sortBy: "price" | "rating" | null;
+    sortBy: "price-asc" | "price-desc" | "rating" | null;
   };
   addToCart: (product: ProductType) => void;
   removeFromCart: (productId: number) => void;
   updateQuantity: (productId: number, quantity: number) => void;
   setFilterCategory: (category: string | null) => void;
   setSearch: (search: string) => void;
-  setSortBy: (sortBy: "price" | "rating" | null) => void;
+  setSortBy: (sortBy: "price-asc" | "price-desc" | "rating" | null) => void;
   clearCart: () => void;
 }
 
@@ -31,6 +31,8 @@ export const useProductStore = create<StoreState>()(
         search: "",
         sortBy: null,
       },
+
+      // cart methods
       addToCart: (product) =>
         set((state) => {
           const exists = state.cartItems.find((item) => item.id === product.id);
@@ -57,13 +59,15 @@ export const useProductStore = create<StoreState>()(
             item.id === productId ? { ...item, quantity } : item
           ),
         })),
+      clearCart: () => set({ cartItems: [] }),
+
+      // filter and sort methods
       setFilterCategory: (category) =>
         set((state) => ({ filters: { ...state.filters, category } })),
       setSearch: (search) =>
         set((state) => ({ filters: { ...state.filters, search } })),
-      setSortBy: (sortBy) =>
+      setSortBy: (sortBy: "price-asc" | "price-desc" | "rating" | null) =>
         set((state) => ({ filters: { ...state.filters, sortBy } })),
-      clearCart: () => set({ cartItems: [] }),
     }),
     {
       name: "product-store",

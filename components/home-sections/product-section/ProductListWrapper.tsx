@@ -5,8 +5,15 @@ import ProductCard from "./ProductCard";
 import { Loader } from "lucide-react";
 import { useFilteredProducts } from "@/hooks/useFilterProducts";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
+import { FilterBar } from "./FilterBar";
 
-const ProductListWrapper = ({ products }: { products: ProductType[] }) => {
+const ProductListWrapper = ({
+  products,
+  categories,
+}: {
+  products: ProductType[];
+  categories: string[];
+}) => {
   const filteredProducts = useFilteredProducts(products);
 
   const { visibleItems, loading, canLoadMore } = useInfiniteScroll<ProductType>(
@@ -19,6 +26,8 @@ const ProductListWrapper = ({ products }: { products: ProductType[] }) => {
 
   return (
     <>
+      <FilterBar categories={categories} />
+
       <ProductCard products={visibleItems} />
 
       {loading && (
