@@ -21,7 +21,7 @@ const CartPage = () => {
   }
 
   return (
-    <div className="max-w-6xl mx-auto p-4">
+    <section className="max-w-6xl mx-auto p-4">
       <h1 className="text-2xl font-bold mb-6">Shopping Cart</h1>
 
       {/* Cart Items */}
@@ -96,10 +96,12 @@ const CartPage = () => {
               <span>Subtotal</span>
               <span>
                 $
-                {cartItems.reduce(
-                  (total, item) => total + item.price * item.quantity,
-                  0
-                )}
+                {cartItems
+                  .reduce(
+                    (total, item) => total + item.price * item.quantity,
+                    0
+                  )
+                  .toFixed(2)}
               </span>
             </div>
             <div className="flex justify-between">
@@ -138,7 +140,7 @@ const CartPage = () => {
           </Button>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
