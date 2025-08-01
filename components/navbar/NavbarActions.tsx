@@ -9,7 +9,7 @@ const NavbarActions = () => {
   const { cartItems } = useProductStore();
 
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center gap-4 max-sm:gap-2">
       <Button
         asChild
         size="icon"
@@ -28,7 +28,7 @@ const NavbarActions = () => {
       <Button
         variant="default"
         asChild
-        className="max-sm:p-0 w-full h-[45px] px-8"
+        className="max-sm:p-0 w-full h-[45px] px-8 max-sm:bg-transparent max-sm:text-primary"
       >
         <Link href="/create">
           <PlusIcon className="size-5 sm:-ms-1" aria-hidden="true" />

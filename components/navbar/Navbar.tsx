@@ -21,7 +21,9 @@ export default function Navbar() {
                 className="text-primary hover:text-primary/90 flex items-center gap-2 text-xl"
               >
                 <Feather className="size-6" />
-                <span className="font-semibold">VervCommerce</span>
+                <span className="font-semibold max-sm:text-sm">
+                  VervCommerce
+                </span>
               </Link>
             </div>
             {/* Search form */}
