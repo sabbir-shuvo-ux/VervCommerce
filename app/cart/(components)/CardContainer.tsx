@@ -64,7 +64,7 @@ const CardContainer = () => {
                 />
                 <div>
                   <h2 className="text-lg font-semibold hover:underline">
-                    <Link href={`/product/${item.id}`}>{item.title}</Link>
+                    <Link href={`/products/${item.id}`}>{item.title}</Link>
                   </h2>
                   <p className="text-gray-500 text-sm">{item.category}</p>
                   <p className="mt-1 text-sm font-medium text-green-600">

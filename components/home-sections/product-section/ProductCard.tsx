@@ -37,12 +37,14 @@ const ProductCard = ({ product }: { product: ProductType }) => {
           className="object-contain rounded-3xl w-full h-auto max-h-[250px]"
         />
 
-        <span className="absolute top-2 right-2 bg-primary text-xs h-fit font-light text-white rounded-full capitalize px-2 py-1">
+        <span className="absolute top-2 right-2 bg-foreground text-xs h-fit font-light text-white rounded-full capitalize px-2 py-1">
           {product.category}
         </span>
       </Link>
       <div className="px-4 pt-6 pb-4 overflow-hidden w-full group-hover:bg-accent rounded-3xl transition-all duration-300">
-        <h3 className="truncate text-xl font-semibold mb-2">{product.title}</h3>
+        <h3 className="truncate text-xl font-semibold mb-2">
+          <Link href={`/products/${product.id}`}>{product.title}</Link>
+        </h3>
         <div className="flex items-center gap-2 mb-4">
           <div className="flex gap-[2px] items-center text-yellow-500">
             {getRatingStars(product.rating.rate)}
