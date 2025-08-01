@@ -1,11 +1,10 @@
 "use client";
-import React from "react";
-import type { ProductType } from "@/types";
-import ProductCard from "./ProductCard";
-import { Loader } from "lucide-react";
 import { useFilteredProducts } from "@/hooks/useFilterProducts";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
+import type { ProductType } from "@/types";
+import { Loader } from "lucide-react";
 import { FilterBar } from "./FilterBar";
+import ProductList from "./ProductList";
 
 const ProductListWrapper = ({
   products,
@@ -28,7 +27,7 @@ const ProductListWrapper = ({
     <>
       <FilterBar categories={categories} />
 
-      <ProductCard products={visibleItems} />
+      <ProductList products={visibleItems} />
 
       {loading && (
         <div className="text-center py-10 text-gray-500 w-full flex items-center justify-center gap-4">

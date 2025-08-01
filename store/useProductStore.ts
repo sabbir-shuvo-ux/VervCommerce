@@ -20,11 +20,13 @@ interface StoreState {
   setSearch: (search: string) => void;
   setSortBy: (sortBy: "price-asc" | "price-desc" | "rating" | null) => void;
   clearCart: () => void;
+  isInCart: (productId: number) => boolean;
+  getCartItemById: (id: number) => CartItem | undefined;
 }
 
 export const useProductStore = create<StoreState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       cartItems: [],
       filters: {
         category: null,
@@ -49,16 +51,21 @@ export const useProductStore = create<StoreState>()(
             cartItems: [...state.cartItems, { ...product, quantity: 1 }],
           };
         }),
+
       removeFromCart: (productId) =>
         set((state) => ({
           cartItems: state.cartItems.filter((item) => item.id !== productId),
         })),
+
       updateQuantity: (productId, quantity) =>
         set((state) => ({
           cartItems: state.cartItems.map((item) =>
-            item.id === productId ? { ...item, quantity } : item
+            item.id === productId
+              ? { ...item, quantity: Math.max(1, quantity) }
+              : item
           ),
         })),
+
       clearCart: () => set({ cartItems: [] }),
 
       // filter and sort methods
@@ -68,6 +75,14 @@ export const useProductStore = create<StoreState>()(
         set((state) => ({ filters: { ...state.filters, search } })),
       setSortBy: (sortBy: "price-asc" | "price-desc" | "rating" | null) =>
         set((state) => ({ filters: { ...state.filters, sortBy } })),
+
+      // check if product is in cart
+      isInCart: (productId) => {
+        const cart = get().cartItems;
+        return cart.some((item) => item.id === productId);
+      },
+      // get cart item by id
+      getCartItemById: (id) => get().cartItems.find((item) => item.id === id),
     }),
     {
       name: "product-store",

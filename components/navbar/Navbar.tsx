@@ -1,9 +1,8 @@
-import { Feather, PlusIcon, SearchIcon, ShoppingCartIcon } from "lucide-react";
+import { Feather } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import MobileSidebar from "./MobileSidebar";
+import NavbarActions from "./NavbarActions";
 import SearchInput from "./SearchInput";
 
 export default function Navbar() {
@@ -31,34 +30,8 @@ export default function Navbar() {
             </div>
           </div>
         </div>
-        {/* Right side */}
-        <div className="flex items-center gap-4">
-          <Button
-            asChild
-            size="icon"
-            variant={"ghost"}
-            className="text-base relative h-[45px] px-8"
-          >
-            <a href="#">
-              <span className="flex items-baseline gap-2">
-                <span className="text-xs absolute top-0 right-2 bg-primary text-primary-foreground rounded-full w-4 h-4 flex items-center justify-center">
-                  2
-                </span>
-                <ShoppingCartIcon className="size-6" />
-              </span>
-            </a>
-          </Button>
-          <Button
-            variant="default"
-            asChild
-            className="max-sm:p-0 w-full h-[45px] px-8"
-          >
-            <Link href="/create">
-              <PlusIcon className="size-5 sm:-ms-1" aria-hidden="true" />
-              <span className="max-sm:sr-only">Add new</span>
-            </Link>
-          </Button>
-        </div>
+        {/* Right */}
+        <NavbarActions />
       </div>
     </header>
   );
