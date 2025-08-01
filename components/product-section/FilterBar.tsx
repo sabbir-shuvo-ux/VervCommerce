@@ -19,7 +19,7 @@ export function FilterBar({ categories }: { categories: string[] }) {
     useProductStore();
 
   return (
-    <div className="mb-8 flex items-center gap-4 justify-between">
+    <div className="mb-8 flex items-center gap-4 justify-between container px-4 mx-auto">
       <div className="flex items-end justify-start gap-4">
         <div>
           {/* filter category wise */}

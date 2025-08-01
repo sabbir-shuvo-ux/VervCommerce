@@ -1,11 +1,14 @@
 "use client";
 import { useFilteredProducts } from "@/hooks/useFilterProducts";
-import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import { useHydration } from "@/hooks/useHydration";
+import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import type { ProductType } from "@/types";
-import { Loader } from "lucide-react";
 import { FilterBar } from "./FilterBar";
 import ProductList from "./ProductList";
+import {
+  FullProductListSkeleton,
+  ProductListCardSkeleton,
+} from "./ProductListLoadingUI";
 
 const ProductListWrapper = ({
   products,
@@ -27,12 +30,7 @@ const ProductListWrapper = ({
 
   // donty render until hydration complete
   if (!hasHydrated) {
-    return (
-      <div className="text-center py-10 text-gray-500 w-full flex items-center justify-center gap-4">
-        <Loader className="animate-spin" size={20} />
-        <p>Loading...</p>
-      </div>
-    );
+    return <FullProductListSkeleton />;
   }
 
   return (
@@ -43,12 +41,7 @@ const ProductListWrapper = ({
       {/* product list */}
       <ProductList products={visibleItems} />
 
-      {loading && (
-        <div className="text-center py-10 text-gray-500 w-full flex items-center justify-center gap-4">
-          <Loader className="animate-spin" size={20} />
-          <p>Loading more products...</p>
-        </div>
-      )}
+      {loading && <ProductListCardSkeleton />}
 
       {!loading && !canLoadMore && filteredProducts.length > 0 && (
         <div className="text-center py-6 text-gray-400 w-full">
@@ -58,7 +51,7 @@ const ProductListWrapper = ({
 
       {filteredProducts.length === 0 && (
         <div className="text-center py-6 text-gray-400 w-full h-[100vh]">
-          No products found.
+          Search result didn&apos;t match.
         </div>
       )}
     </>

@@ -8,7 +8,7 @@ import SearchInput from "./SearchInput";
 export default function Navbar() {
   return (
     <header className="border-b px-4 md:px-6">
-      <div className="flex h-16 items-center justify-between gap-4">
+      <div className="flex h-16 items-center justify-between gap-4 max-w-[1536px] mx-auto">
         {/* Left side */}
         <div className="flex flex-1 items-center gap-2">
           <MobileSidebar className={"max-lg:block hidden"} />

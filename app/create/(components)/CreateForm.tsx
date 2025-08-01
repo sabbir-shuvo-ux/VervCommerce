@@ -60,7 +60,7 @@ const CreateForm = () => {
     if (form.formState.isSubmitSuccessful) {
       form.reset();
     }
-  }, [form.formState]);
+  }, [form.formState, form]);
 
   const categories = ["Electronics", "Clothing", "Books"];
 
