@@ -51,7 +51,7 @@ const ProductListWrapper = ({
 
       {filteredProducts.length === 0 && (
         <div className="text-center py-6 text-gray-400 w-full h-[100vh]">
-          Search result didn't match.
+          Search result didn&apos;t match.
         </div>
       )}
     </>
