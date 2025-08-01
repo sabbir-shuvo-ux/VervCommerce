@@ -1,6 +1,8 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { useHydration } from "@/hooks/useHydration";
 import { useProductStore } from "@/store/useProductStore";
+import { Loader } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { FaMinus, FaPlus } from "react-icons/fa6";
@@ -10,6 +12,16 @@ import { MdDelete } from "react-icons/md";
 const CartPage = () => {
   const { cartItems, updateQuantity, clearCart, removeFromCart } =
     useProductStore();
+  const hasHydrated = useHydration();
+
+  if (!hasHydrated) {
+    return (
+      <div className="text-center py-10 text-gray-500 w-full flex items-center justify-center gap-4">
+        <Loader className="animate-spin" size={20} />
+        <p>Loading...</p>
+      </div>
+    );
+  }
 
   if (cartItems.length === 0) {
     return (

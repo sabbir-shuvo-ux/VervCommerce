@@ -10,8 +10,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useProductStore } from "@/store/useProductStore";
+import { useHydration } from "@/hooks/useHydration";
 
 export function FilterBar({ categories }: { categories: string[] }) {
+  const hasHydrated = useHydration();
   const { setFilterCategory, filters, setSortBy } = useProductStore();
 
   return (
@@ -20,7 +22,7 @@ export function FilterBar({ categories }: { categories: string[] }) {
         {/* filter category wise */}
         <h3 className="text-lg font-semibold mb-2">Filter by category</h3>
         <Combobox
-          value={filters.category || ""}
+          value={hasHydrated ? filters.category || "" : ""}
           setValue={setFilterCategory}
           data={categories.map((category) => ({
             value: category,
@@ -36,7 +38,7 @@ export function FilterBar({ categories }: { categories: string[] }) {
           onValueChange={(value) =>
             setSortBy(value as "price-asc" | "price-desc" | "rating" | null)
           }
-          value={filters.sortBy || ""}
+          value={hasHydrated ? filters.sortBy || "" : ""}
         >
           <SelectTrigger className="w-[180px] bg-white hover:bg-accent cursor-pointer hover:text-primary">
             <SelectValue placeholder="Sort by price" />

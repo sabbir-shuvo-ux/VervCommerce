@@ -13,6 +13,7 @@ interface StoreState {
     search: string;
     sortBy: "price-asc" | "price-desc" | "rating" | null;
   };
+  _hasHydrated: boolean;
   addToCart: (product: ProductType) => void;
   removeFromCart: (productId: number) => void;
   updateQuantity: (productId: number, quantity: number) => void;
@@ -22,6 +23,7 @@ interface StoreState {
   clearCart: () => void;
   isInCart: (productId: number) => boolean;
   getCartItemById: (id: number) => CartItem | undefined;
+  setHasHydrated: (hasHydrated: boolean) => void;
 }
 
 export const useProductStore = create<StoreState>()(
@@ -33,6 +35,7 @@ export const useProductStore = create<StoreState>()(
         search: "",
         sortBy: null,
       },
+      _hasHydrated: false,
 
       // cart methods
       addToCart: (product) =>
@@ -83,10 +86,16 @@ export const useProductStore = create<StoreState>()(
       },
       // get cart item by id
       getCartItemById: (id) => get().cartItems.find((item) => item.id === id),
+
+      // hydration method
+      setHasHydrated: (hasHydrated) => set({ _hasHydrated: hasHydrated }),
     }),
     {
       name: "product-store",
       storage: createJSONStorage(() => localStorage),
+      onRehydrateStorage: () => (state) => {
+        state?.setHasHydrated(true);
+      },
     }
   )
 );
