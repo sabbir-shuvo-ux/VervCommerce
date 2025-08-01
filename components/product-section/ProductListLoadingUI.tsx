@@ -12,7 +12,7 @@ export const ProductListCardSkeleton = () => {
 
 export const FilterBarSkeleton = () => {
   return (
-    <div className="flex items-center gap-4 pt-8 mb-8 container px-4 mx-auto">
+    <div className="flex items-center gap-4 pt-8 mb-8 container px-4 mx-auto flex-wrap max-sm:justify-center">
       <div className="flex flex-col gap-2">
         <Skeleton className="w-[200px] h-[28px]" />
         <Skeleton className="w-[200px] h-[36px]" />

@@ -27,19 +27,49 @@ export const useInfiniteScroll = <T>({
   }, [canLoadMore, loading, pageSize, items.length, delay]);
 
   const handleScroll = useCallback(() => {
-    if (
-      window.innerHeight + window.scrollY >=
-      document.documentElement.scrollHeight - 100
-    ) {
+    const scrollTop = window.scrollY;
+    const windowHeight = window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight;
+
+    // Check if we're near the bottom (within 200px)
+    if (scrollTop + windowHeight >= documentHeight - 200) {
+      loadMore();
+    }
+  }, [loadMore]);
+
+  // Check if we need to load more content initially
+  const checkInitialLoad = useCallback(() => {
+    const windowHeight = window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight;
+
+    // If the document height is less than or equal to window height,
+    // or if very close to the bottom, load more
+    if (documentHeight <= windowHeight || documentHeight - windowHeight < 300) {
       loadMore();
     }
   }, [loadMore]);
 
   useEffect(() => {
     if (items.length === 0) return;
+
+    // Add scroll event listener
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [handleScroll, items.length]);
+
+    // Check initial load after a short delay to ensure DOM is rendered
+    const initialCheckTimer = setTimeout(() => {
+      checkInitialLoad();
+    }, 100);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      clearTimeout(initialCheckTimer);
+    };
+  }, [handleScroll, checkInitialLoad, items.length]);
+
+  // Reset visible count when items change
+  useEffect(() => {
+    setVisibleCount(pageSize);
+  }, [items.length, pageSize]);
 
   return {
     visibleItems: items.slice(0, visibleCount),

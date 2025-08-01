@@ -123,7 +123,7 @@ const CreateForm = () => {
               )}
             />
 
-            <div className="flex gap-4 items-center w-full">
+            <div className="flex gap-4 items-center w-full max-sm:flex-col">
               <FormField
                 control={form.control}
                 name="price"

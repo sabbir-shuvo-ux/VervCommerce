@@ -20,7 +20,7 @@ export function FilterBar({ categories }: { categories: string[] }) {
 
   return (
     <div className="mb-8 flex items-center gap-4 justify-between container px-4 mx-auto">
-      <div className="flex items-end justify-start gap-4">
+      <div className="flex items-end justify-start gap-4 flex-wrap max-sm:justify-center">
         <div>
           {/* filter category wise */}
           <h3 className="text-lg font-semibold mb-2">Filter by category</h3>

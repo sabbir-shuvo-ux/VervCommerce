@@ -30,8 +30,9 @@ const MobileSidebar = ({ className }: Props) => {
             VervCommerce
           </SheetTitle>
           <SheetDescription />
-          <div className="flex gap-2 items-center justify-center w-full">
-            <SearchInput />
+          {/* search input */}
+          <div className="flex gap-2 items-center justify-center w-full flex-wrap max-sm:justify-start">
+            <SearchInput className="min-w-full" />
             <Button
               variant={"outline"}
               className="h-[45px] border-primary text-primary"

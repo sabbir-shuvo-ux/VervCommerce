@@ -9,6 +9,7 @@ import {
   FullProductListSkeleton,
   ProductListCardSkeleton,
 } from "./ProductListLoadingUI";
+import { useEffect } from "react";
 
 const ProductListWrapper = ({
   products,
@@ -27,6 +28,42 @@ const ProductListWrapper = ({
       delay: 1500,
     }
   );
+
+  // Ensure proper loading when content is insufficient
+  useEffect(() => {
+    if (hasHydrated && filteredProducts.length > visibleItems.length) {
+      const checkScroll = () => {
+        const windowHeight = window.innerHeight;
+        const documentHeight = document.documentElement.scrollHeight;
+
+        // If there's not enough content to scroll, trigger load more
+        if (documentHeight <= windowHeight + 100) {
+          // Small delay to ensure the current content is rendered
+          setTimeout(() => {
+            const newDocumentHeight = document.documentElement.scrollHeight;
+            if (
+              newDocumentHeight <= windowHeight + 100 &&
+              canLoadMore &&
+              !loading
+            ) {
+              // Force a scroll event to trigger load more
+              window.dispatchEvent(new Event("scroll"));
+            }
+          }, 200);
+        }
+      };
+
+      // Check after a short delay to ensure DOM is updated
+      const timer = setTimeout(checkScroll, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [
+    hasHydrated,
+    filteredProducts.length,
+    visibleItems.length,
+    canLoadMore,
+    loading,
+  ]);
 
   // donty render until hydration complete
   if (!hasHydrated) {
