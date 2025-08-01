@@ -26,7 +26,7 @@ const ProductCard = ({ product }: { product: ProductType }) => {
   return (
     <div key={product.id} className="bg-white rounded-3xl group">
       <Link
-        href={`/product/${product.id}`}
+        href={`/products/${product.id}`}
         className="relative w-full max-h-[250px] h-[250px] block"
       >
         <Image

@@ -37,8 +37,10 @@ const ProductListWrapper = ({
 
   return (
     <>
+      {/* filter section */}
       <FilterBar categories={categories} />
 
+      {/* product list */}
       <ProductList products={visibleItems} />
 
       {loading && (
