@@ -21,6 +21,7 @@ interface StoreState {
   setSearch: (search: string) => void;
   setSortBy: (sortBy: "price-asc" | "price-desc" | "rating" | null) => void;
   clearCart: () => void;
+  resetFilters: () => void;
   isInCart: (productId: number) => boolean;
   getCartItemById: (id: number) => CartItem | undefined;
   setHasHydrated: (hasHydrated: boolean) => void;
@@ -89,6 +90,10 @@ export const useProductStore = create<StoreState>()(
 
       // hydration method
       setHasHydrated: (hasHydrated) => set({ _hasHydrated: hasHydrated }),
+
+      // reset filters
+      resetFilters: () =>
+        set({ filters: { category: null, search: "", sortBy: null } }),
     }),
     {
       name: "product-store",

@@ -41,7 +41,7 @@ const ProductCard = ({ product }: { product: ProductType }) => {
           {product.category}
         </span>
       </Link>
-      <div className="px-4 pt-6 pb-4 overflow-hidden w-full group-hover:bg-accent transition-all duration-300">
+      <div className="px-4 pt-6 pb-4 overflow-hidden w-full group-hover:bg-accent rounded-3xl transition-all duration-300">
         <h3 className="truncate text-xl font-semibold mb-2">{product.title}</h3>
         <div className="flex items-center gap-2 mb-4">
           <div className="flex gap-[2px] items-center text-yellow-500">
