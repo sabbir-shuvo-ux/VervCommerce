@@ -1,6 +1,7 @@
 import type { ProductType } from "@/types";
 import ProductListWrapper from "./ProductListWrapper";
 
+// get server side products
 const getProductData = async (): Promise<ProductType[]> => {
   const res = await fetch(`${process.env.API_BASE_URL}/products`, {
     cache: "force-cache",
@@ -12,6 +13,7 @@ const getProductData = async (): Promise<ProductType[]> => {
   return data;
 };
 
+// get server side categories
 const getCategoriesData = async (): Promise<string[]> => {
   const res = await fetch(`${process.env.API_BASE_URL}/products/categories`, {
     cache: "force-cache",
@@ -24,13 +26,15 @@ const getCategoriesData = async (): Promise<string[]> => {
 };
 
 const ProductContainer = async () => {
+  // await new Promise((resolve) => setTimeout(resolve, 15000));
+
   const [products, categories] = await Promise.all([
     getProductData(),
     getCategoriesData(),
   ]);
 
   return (
-    <section className="container px-4 mx-auto bg-secondary py-8">
+    <section className="bg-secondary py-8">
       <ProductListWrapper products={products} categories={categories} />
     </section>
   );

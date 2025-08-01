@@ -2,6 +2,7 @@ import { ProductType } from "@/types";
 import type { Metadata } from "next";
 
 import ProductViewContainer from "./(components)/ProductViewContainer";
+import { notFound } from "next/navigation";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -13,7 +14,10 @@ const getProductData = async (id: string): Promise<ProductType> => {
     cache: "force-cache",
     next: { revalidate: 60 * 60 * 24 },
   });
-  if (!res.ok) throw new Error("Failed to fetch products");
+
+  if (!res.ok) {
+    notFound();
+  }
 
   const data: ProductType = await res.json();
   return data;
