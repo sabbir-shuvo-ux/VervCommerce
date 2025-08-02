@@ -10,6 +10,7 @@ import {
   ProductListCardSkeleton,
 } from "./ProductListLoadingUI";
 import { useEffect } from "react";
+import { useProductStore } from "@/store/useProductStore";
 
 const ProductListWrapper = ({
   products,
@@ -19,7 +20,10 @@ const ProductListWrapper = ({
   categories: string[];
 }) => {
   const hasHydrated = useHydration();
-  const filteredProducts = useFilteredProducts(products);
+  const newProducts = useProductStore((state) => state.createdProducts);
+  const mergedProducts = [...newProducts, ...products];
+
+  const filteredProducts = useFilteredProducts(mergedProducts);
 
   const { visibleItems, loading, canLoadMore } = useInfiniteScroll<ProductType>(
     {

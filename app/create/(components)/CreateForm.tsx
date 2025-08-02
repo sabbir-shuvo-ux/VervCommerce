@@ -1,9 +1,5 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -21,14 +17,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import {
   CreateProductSchema,
   CreateProductSchemaType,
 } from "@/schema/CreateSchema";
+import { useProductStore } from "@/store/useProductStore";
+import { ProductType } from "@/types";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { Switch } from "@/components/ui/switch";
-import { useState } from "react";
 
 const CreateForm = () => {
   const [checked, setChecked] = useState(false);
@@ -44,23 +45,66 @@ const CreateForm = () => {
     },
   });
 
+  const { addCreatedProduct } = useProductStore();
+
   async function onSubmit(values: CreateProductSchemaType) {
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    toast.success("Product created successfully!");
+    const id = Number(`${Date.now()}${Math.floor(Math.random() * 1000)}`);
 
-    console.log(values);
+    const product = {
+      id,
+      title: values.title,
+      price: values.price,
+      description: values.description,
+      category: values.category,
+      image: values.imageUrl,
+    };
 
-    if (!checked) {
-      router.push("/");
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/products`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(product),
+        }
+      );
+
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => null);
+        const message = errorData?.message || "Failed to create product.";
+        throw new Error(message);
+      }
+
+      const data: Omit<ProductType, "rating"> = await res.json();
+
+      // validate expected properties
+      if (!data?.id) throw new Error("Product creation response is invalid.");
+
+      addCreatedProduct({
+        id: data.id,
+        category: data.category,
+        description: data.description,
+        price: data.price,
+        title: data.title,
+        rating: { count: 0, rate: 0 },
+        image: "",
+      });
+
+      toast.success("Product created successfully!");
+      form.reset();
+
+      if (!checked) {
+        router.push("/");
+      }
+    } catch (error: unknown) {
+      const message =
+        error instanceof Error ? error.message : "Something went wrong.";
+      toast.error(message);
+      console.error("Product creation error:", error);
     }
   }
-
-  useEffect(() => {
-    if (form.formState.isSubmitSuccessful) {
-      form.reset();
-    }
-  }, [form.formState, form]);
 
   const categories = ["Electronics", "Clothing", "Books"];
 

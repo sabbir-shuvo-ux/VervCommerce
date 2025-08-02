@@ -56,7 +56,7 @@ const CardContainer = () => {
             >
               <div className="flex items-center gap-4">
                 <Image
-                  src={item.image}
+                  src={item.image ? item.image : "/dummy-product-image.jpg"}
                   width={100}
                   height={100}
                   alt={item.title}

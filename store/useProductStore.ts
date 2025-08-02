@@ -8,6 +8,7 @@ interface CartItem extends ProductType {
 
 interface StoreState {
   cartItems: CartItem[];
+  createdProducts: ProductType[];
   filters: {
     category: string | null;
     search: string;
@@ -25,12 +26,16 @@ interface StoreState {
   isInCart: (productId: number) => boolean;
   getCartItemById: (id: number) => CartItem | undefined;
   setHasHydrated: (hasHydrated: boolean) => void;
+  addCreatedProduct: (product: ProductType) => void;
+  removeCreatedProduct: (productId: number) => void;
+  isInCreatedProducts: (productId: number) => boolean;
 }
 
 export const useProductStore = create<StoreState>()(
   persist(
     (set, get) => ({
       cartItems: [],
+      createdProducts: [],
       filters: {
         category: null,
         search: "",
@@ -71,6 +76,23 @@ export const useProductStore = create<StoreState>()(
         })),
 
       clearCart: () => set({ cartItems: [] }),
+
+      // created products methods
+      addCreatedProduct: (product) =>
+        set((state) => ({
+          createdProducts: [...state.createdProducts, product],
+        })),
+      removeCreatedProduct: (productId) =>
+        set((state) => ({
+          createdProducts: state.createdProducts.filter(
+            (item) => item.id !== productId
+          ),
+        })),
+
+      isInCreatedProducts: (productId) => {
+        const cart = get().createdProducts;
+        return cart.some((item) => item.id === productId);
+      },
 
       // filter and sort methods
       setFilterCategory: (category) =>
