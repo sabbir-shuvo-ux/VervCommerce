@@ -26,8 +26,6 @@ const getCategoriesData = async (): Promise<string[]> => {
 };
 
 const ProductContainer = async () => {
-  // await new Promise((resolve) => setTimeout(resolve, 15000));
-
   const [products, categories] = await Promise.all([
     getProductData(),
     getCategoriesData(),

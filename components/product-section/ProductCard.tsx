@@ -1,19 +1,27 @@
-import React, { useState } from "react";
-import Link from "next/link";
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { getRatingStars } from "@/lib/getRatingStars";
-import type { ProductType } from "@/types";
 import { useProductStore } from "@/store/useProductStore";
+import type { ProductType } from "@/types";
+import { X } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useState } from "react";
 import { FaMinus, FaPlus } from "react-icons/fa6";
 
 const ProductCard = ({ product }: { product: ProductType }) => {
-  const { addToCart, isInCart, updateQuantity, getCartItemById } =
-    useProductStore();
+  const {
+    addToCart,
+    isInCart,
+    updateQuantity,
+    getCartItemById,
+    isInCreatedProducts,
+    removeCreatedProduct,
+  } = useProductStore();
   const [loading, setLoading] = useState(false);
 
   // get quantity from cart
   const quantity = getCartItemById(product.id)?.quantity ?? 1;
+  const isOrwnProduct = isInCreatedProducts(product.id);
 
   const handleAddToCart = (product: ProductType) => {
     setLoading(true);
@@ -26,13 +34,17 @@ const ProductCard = ({ product }: { product: ProductType }) => {
   return (
     <div key={product.id} className="bg-white rounded-3xl group">
       <Link
-        href={`/products/${product.id}`}
+        href={
+          isOrwnProduct
+            ? `/myproducts/${product.id}`
+            : `/products/${product.id}`
+        }
         className="relative w-full max-h-[250px] h-[250px] block"
       >
         <Image
           width={250}
           height={250}
-          src={product.image}
+          src={product.image ? product.image : "/dummy-product-image.jpg"}
           alt={product.title}
           className="object-contain rounded-3xl w-full h-auto max-h-[250px]"
         />
@@ -40,10 +52,27 @@ const ProductCard = ({ product }: { product: ProductType }) => {
         <span className="absolute top-2 right-2 bg-foreground text-xs h-fit font-light text-white rounded-full capitalize px-2 py-1">
           {product.category}
         </span>
+
+        {isOrwnProduct && (
+          <span
+            onMouseDown={() => removeCreatedProduct(product.id)}
+            className="absolute top-2 left-2 bg-foreground text-xs h-fit font-light text-white rounded-full capitalize px-2 py-1"
+          >
+            <X />
+          </span>
+        )}
       </Link>
       <div className="px-4 pt-6 pb-4 overflow-hidden w-full group-hover:bg-accent rounded-3xl transition-all duration-300">
         <h3 className="truncate text-xl font-semibold mb-2">
-          <Link href={`/products/${product.id}`}>{product.title}</Link>
+          <Link
+            href={
+              isOrwnProduct
+                ? `/myproducts/${product.id}`
+                : `/products/${product.id}`
+            }
+          >
+            {product.title}
+          </Link>
         </h3>
         <div className="flex items-center gap-2 mb-4">
           <div className="flex gap-[2px] items-center text-yellow-500">

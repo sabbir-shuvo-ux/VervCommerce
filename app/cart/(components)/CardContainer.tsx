@@ -8,6 +8,7 @@ import Link from "next/link";
 import { FaMinus, FaPlus } from "react-icons/fa6";
 import { IoMdClose } from "react-icons/io";
 import { MdDelete } from "react-icons/md";
+import CartItemCard from "./CartItemCard";
 
 const CardContainer = () => {
   const { cartItems, updateQuantity, clearCart, removeFromCart } =
@@ -49,54 +50,8 @@ const CardContainer = () => {
               Clear Cart
             </Button>
           </div>
-          {cartItems.map((item) => (
-            <div
-              key={item.id}
-              className="flex flex-col md:flex-row items-center justify-between border p-4 rounded-lg shadow-sm"
-            >
-              <div className="flex items-center gap-4">
-                <Image
-                  src={item.image}
-                  width={100}
-                  height={100}
-                  alt={item.title}
-                  className="w-24 h-24 rounded-md object-cover"
-                />
-                <div>
-                  <h2 className="text-lg font-semibold hover:underline">
-                    <Link href={`/products/${item.id}`}>{item.title}</Link>
-                  </h2>
-                  <p className="text-gray-500 text-sm">{item.category}</p>
-                  <p className="mt-1 text-sm font-medium text-green-600">
-                    ${item.price}
-                  </p>
-                </div>
-              </div>
-              <div className="mt-4 md:mt-0 flex items-center gap-4">
-                <Button
-                  variant="secondary"
-                  size="icon"
-                  onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                >
-                  <FaMinus />
-                </Button>
-                <span className="text-lg font-medium">{item.quantity}</span>
-                <Button
-                  size="icon"
-                  variant="secondary"
-                  onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                >
-                  <FaPlus />
-                </Button>
-                <Button
-                  variant="destructive"
-                  size="icon"
-                  onClick={() => removeFromCart(item.id)}
-                >
-                  <IoMdClose />
-                </Button>
-              </div>
-            </div>
+          {cartItems.map((item, index) => (
+            <CartItemCard key={item.id + item.category + index} item={item} />
           ))}
         </div>
 
