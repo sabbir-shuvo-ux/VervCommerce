@@ -16,8 +16,15 @@ import SearchInput from "../navbar/SearchInput";
 
 export function FilterBar({ categories }: { categories: string[] }) {
   const hasHydrated = useHydration();
-  const { setFilterCategory, filters, setSortBy, resetFilters } =
-    useProductStore();
+  const {
+    setFilterCategory,
+    filters,
+    setSortBy,
+    resetFilters,
+    createdProducts,
+  } = useProductStore();
+
+  console.log(createdProducts);
 
   return (
     <div className="mb-8 flex items-center gap-4 justify-between container px-4 mx-auto">

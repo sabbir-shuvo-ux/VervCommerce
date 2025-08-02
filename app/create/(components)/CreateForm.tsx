@@ -83,7 +83,7 @@ const CreateForm = () => {
       if (!data?.id) throw new Error("Product creation response is invalid.");
 
       addCreatedProduct({
-        id: data.id,
+        id,
         category: data.category,
         description: data.description,
         price: data.price,
