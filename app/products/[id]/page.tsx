@@ -35,6 +35,8 @@ export default async function ProductViewPage({ params }: Props) {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
 
+  await new Promise((resolve) => setTimeout(resolve, 10000));
+
   const product = await getProductData(id);
 
   return {
