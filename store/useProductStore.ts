@@ -2,7 +2,7 @@ import { create } from "zustand";
 import type { ProductType } from "@/types";
 import { createJSONStorage, persist } from "zustand/middleware";
 
-interface CartItem extends ProductType {
+export interface CartItem extends ProductType {
   quantity: number;
 }
 
