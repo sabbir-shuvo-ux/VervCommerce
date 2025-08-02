@@ -3,7 +3,6 @@ import { Feather } from "lucide-react";
 import Link from "next/link";
 import MobileSidebar from "./MobileSidebar";
 import NavbarActions from "./NavbarActions";
-import SearchInput from "./SearchInput";
 
 export default function Navbar() {
   return (
@@ -25,10 +24,6 @@ export default function Navbar() {
                   VervCommerce
                 </span>
               </Link>
-            </div>
-            {/* Search form */}
-            <div className="flex w-full items-center justify-center max-lg:hidden">
-              <SearchInput />
             </div>
           </div>
         </div>
