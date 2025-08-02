@@ -12,6 +12,7 @@ import {
 import { useProductStore } from "@/store/useProductStore";
 import { useHydration } from "@/hooks/useHydration";
 import { Button } from "@/components/ui/button";
+import SearchInput from "../navbar/SearchInput";
 
 export function FilterBar({ categories }: { categories: string[] }) {
   const hasHydrated = useHydration();
@@ -67,6 +68,10 @@ export function FilterBar({ categories }: { categories: string[] }) {
             Reset
           </Button>
         ) : null}
+      </div>
+
+      <div className="flex items-center justify-center max-lg:hidden">
+        <SearchInput />
       </div>
     </div>
   );
